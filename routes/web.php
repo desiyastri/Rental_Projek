@@ -18,3 +18,33 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/admin', function () {
+    return view('admin/admin');
+});
+
+
+
+//Route DetailTiket
+Route::get('/admin/detail', 'DetailtiketController@detail');
+
+Route::post('/detailAction','DetailtiketController@add_Detail');
+
+Route::get('/admin/detail/hapus/{id}','DetailtiketController@delete_Detail');
+
+Route::get('/admin/detail/edit/{id}','DetailtiketController@edit_Detail');
+
+Route::post('/admin/detail/update','DetailtiketController@detail_Update');
+
+//Route mobil
+Route::get('admin/mobil', 'MobilController@mobil');
+
+//Route Pelanggan
+Route::get('admin/pelanggan', 'PelangganController@pelanggan');
+Route::post('/pelangganAction', 'PelangganController@add_Pelanggan');
+Route::post('/pelangganUpdate', 'PelangganController@pelanggan_Update');
+Route::get('admin/delete/{id}', 'PelangganController@delete_Pelanggan');
+
+//Route coba upload file
+Route::get('/upload', 'UploadController@upload');
+Route::post('/upload/proses', 'UploadController@prosses_upload');
