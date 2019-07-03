@@ -103,6 +103,57 @@ desired effect
                   Add
                 </button>
 
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title" style="margin-bottom: -20px" id="exampleModalLabel">Tambah Data Pelanggan</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      @if(count($errors) > 0)
+              				<div class="alert alert-danger">
+              					@foreach ($errors->all() as $error)
+              					{{ $error }} <br/>
+              					@endforeach
+              				</div>
+              				@endif
+
+                      <form role="form" id="formAdd" method="POST" action="/mobilAction" enctype="multipart/form-data"> 
+                        <div class="modal-body">
+                            <div class="box-body">
+                              <div class="form-group">
+                                {{csrf_field()}}
+                                <label for="in_id">No Polisi</label>
+                                <input type="text" class="form-control" placeholder="Masukan Id" name="no_polisi">
+                                <label for="in_nama">merk_mobil</label>
+                                <input type="text" class="form-control" placeholder="Masukan nama" name="merk_mobil">
+
+                                <label for="in_alamat">jenis_mobil</label>
+                                <input type="text" class="form-control" placeholder="Masukan alamat" name="jenis_mobil">
+
+                                <label for="in_jk">Harga</label><br>
+                                <input type="text" class="form-control" placeholder="Masukan alamat" name="harga">
+
+                                <label for="in_no_telp">Deskripsi</label>
+                                <input type="text" class="form-control" placeholder="Masukan nomor" name="deskripsi">
+
+                                <label for="in_no_telp">Image</label>
+                                <input type="file" name="img">
+                              </div><!-- /.box-body -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <input style="float:right;" type="submit" class="btn btn-primary" name="btn_submit" value="Submit"></input>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <!-- END MODAL -->
+
 
 
 
@@ -117,14 +168,14 @@ desired effect
                   <th class="attrName">Action</th>
                 </tr>
 
-                  @foreach($tb_mobil as $d)
+                  @foreach($mobil as $d)
                   <tr class="row_data">
                     <td class="td_no">{{ $d->no_polisi }}</td>
                     <td class="td_merk">{{ $d->merk_mobil }}</td>
                     <td class="td_jenis">{{ $d->jenis_mobil }}</td>
                     <td class="td_harga">{{ $d->harga}}</td>
                     <td class="td_des">{{ $d->deskripsi}}</td>
-                    <td class="td_img">{{ $d->image}}</td>
+                    <td class="td_img"><img width="150px" src="{{ url('/img_rental/'.$d->img) }}"></td>
                     <td>
                       <button type="button" class="btn btn-success" id="edit-item"
                       data-item-no="{{$d->no_polisi}}"
@@ -132,9 +183,9 @@ desired effect
                       data-item-jenis="{{$d->jenis_mobil}}"
                       data-item-harga="{{$d->harga}}"
                       data-item-desc="{{$d->deskripsi}}"
-                      data-item-img="{{$d->image}}"
+                      data-item-img="{{$d->img}}"
                       data-toggle="modal" data-target="#editModal">Edit</button>
-                      <a href="/admin/detail/hapus/{{ $d->no_polisi }}">
+                      <a href="/admin/mobil/hapus/{{ $d->id }}">
                         <input type="submit" name="btnDelete" class="btn btn-danger" value="Delete">
                       </a>
                     </td>
@@ -195,82 +246,7 @@ desired effect
      <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 
 
-     <!-- SCRIPT FOR GETTING DATA FROM TABLE USING JQUERY -->
-     <script>
-
-         $(document).ready(function(){
-
-           $(document).on('click', "#edit-item", function() {
-
-             //alert("tombol edit telah diklik");
-
-             $(this).addClass('edit-item-trigger-clicked');
-
-             var options={
-               'backdrop':'static'
-             };
-             //alert(options);
-
-             $('#editModal').modal(options);
-
-           })
-
-           //on modal show
-
-           $('#editModal').on('show.bs.modal', function(event) {
-
-             //alert("Edit 2 telah aktif");
-
-             var button=$(event.relatedTarget);
-             var edit_id=button.data('item-id');
-             var edit_harga=button.data('item-harga');
-             var edit_tujuan=button.data('item-tujuan');
-             var edit_kode=button.data('item-kode');
-
-             var modal=$(this)
-
-             modal.find('.modal-body #in_id').val(edit_id);
-             modal.find('.modal-body #in_harga').val(edit_harga);
-             modal.find('.modal-body #in_tujuan').val(edit_tujuan);
-             modal.find('.modal-body #in_kode').val(edit_kode);
-
-
-             // ========================================
-
-             // var el=$(".edit-item-trigger-clicked");
-
-             // var row=el.closest(".row_data");
-
-             //alert(row);
-
-             //var myJSON=JSON.stringify(row);
-
-
-
-             // var id=row.children(".td_id");
-             // var harga=row.children(".td_harga");
-             // var tujuan=row.children(".td_tujuan").text();
-             // var kode=row.children(".td_kode").text();
-
-             //alert(id);
-
-             // $('#in_id').val("P00001");
-             // $('#in_harga').val("100000");
-             // $('#in_tujuan').val("Jakarta");
-             // $('#in_kode').val("KT001");
-
-             })
-
-             //on modal hide
-             $('#editModal').on('hide.bs.modal',function() {
-               //alert("mdoal hide");
-               $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked');
-               $("#editForm").trigger("reset");
-           })
-
-         })
-
-     </script>
+     
 
 </body>
 </html>

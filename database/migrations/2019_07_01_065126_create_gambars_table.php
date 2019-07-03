@@ -15,7 +15,7 @@ class CreateGambarsTable extends Migration
     {
         Schema::create('gambars', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('file');
+            $table->blob('file');
             $table->string('keterangan');
             $table->timestamps();
         });

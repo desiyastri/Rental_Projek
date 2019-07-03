@@ -38,6 +38,8 @@ Route::post('/admin/detail/update','DetailtiketController@detail_Update');
 
 //Route mobil
 Route::get('admin/mobil', 'MobilController@mobil');
+Route::post('/mobilAction','MobilController@proses_upload');
+Route::get('admin/mobil/hapus/{id}', 'MobilController@hapus');
 
 //Route Pelanggan
 Route::get('admin/pelanggan', 'PelangganController@pelanggan');
@@ -48,3 +50,4 @@ Route::get('admin/delete/{id}', 'PelangganController@delete_Pelanggan');
 //Route coba upload file
 Route::get('/upload', 'UploadController@upload');
 Route::post('/upload/proses', 'UploadController@prosses_upload');
+Route::get('/upload/hapus/{id}', 'UploadController@hapus');
