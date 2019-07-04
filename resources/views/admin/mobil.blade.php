@@ -154,6 +154,60 @@ desired effect
                 </div>
                 <!-- END MODAL -->
 
+                <!-- START MODAL FOR EDIT -->
+                <!-- Modal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title" style="margin-bottom: -20px" id="exampleModalLabel">Edit Data Pelanggan</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <form role="form" method="POST" id="edit-form" action="/mobilUpdate" enctype="multipart/form-data">
+
+                        {{csrf_field()}}
+                        {{ method_field('PUT') }}
+
+                        <div class="modal-body">
+                            <div class="box-body">
+                              <div class="form-group">
+
+
+                                <label for="in_no">No Polisi</label>
+                                <input type="text" class="form-control" id="in_no" placeholder="Masukkan nomor" name="no_polisi">
+
+                                <label for="in_harga">Merk Mobil</label>
+                                <input type="text" class="form-control" id="in_merk" placeholder="Masukan Merk" name="merk_mobil">
+
+                                <label for="in_tujuan">Jenis Mobil</label>
+                                <input type="text" class="form-control" id="in_jenis" placeholder="Masukan Jenis" name="jenis_mobil">
+
+                                <label for="in_harga">Harga</label>
+                                <input type="text" class="form-control" id="in_harga" placeholder="Masukan Harga" name="harga">
+
+                                <label for="in_des">Deskripsi</label>
+                                <textarea name="deskripsi" id="in_des" placeholder="Deskripsi Mobil" class="form-control" cols="30" rows="10"></textarea>
+
+                                <label for="in_img">Image</label>
+                                <input type="file" name="img" id="in_img" class="form-control"><br>
+
+                              </div><!-- /.box-body -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <!-- <button type="submit" style="float:right;" class="btn btn-success" name="btn_udate2">Update</button> -->
+                          <input type="submit" name="btnUpdate" style="float:right;" class="btn btn-primary">
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- END MODAL -->
+
 
 
 
@@ -178,12 +232,13 @@ desired effect
                     <td class="td_img"><img width="150px" src="{{ url('/img_rental/'.$d->img) }}"></td>
                     <td>
                       <button type="button" class="btn btn-success" id="edit-item"
+                    
                       data-item-no="{{$d->no_polisi}}"
                       data-item-merk="{{$d->merk_mobil}}"
                       data-item-jenis="{{$d->jenis_mobil}}"
                       data-item-harga="{{$d->harga}}"
-                      data-item-desc="{{$d->deskripsi}}"
-                      data-item-img="{{$d->img}}"
+                      data-item-des="{{$d->deskripsi}}"
+                      data-item-img="<img width='150px' src='{{ url('/img_rental/'.$d->img) }}'>"
                       data-toggle="modal" data-target="#editModal">Edit</button>
                       <a href="/admin/mobil/hapus/{{ $d->id }}">
                         <input type="submit" name="btnDelete" class="btn btn-danger" value="Delete">
@@ -246,7 +301,64 @@ desired effect
      <script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 
 
-     
+     <!-- SCRIPT FOR GETTING DATA FROM TABLE USING JQUERY -->
+     <script>
+
+         $(document).ready(function(){
+
+           $(document).on('click', "#edit-item", function() {
+
+             //alert("tombol edit telah diklik");
+
+             $(this).addClass('edit-item-trigger-clicked');
+
+             var options={
+               'backdrop':'static'
+             };
+             //alert(options);
+
+             $('#editModal').modal(options);
+
+           })
+
+           //on modal show
+
+           $('#editModal').on('show.bs.modal', function(event) {
+
+             //alert("Edit 2 telah aktif");
+
+             var button=$(event.relatedTarget);
+             //var edti_id=button.data('item-id');
+             var edit_no=button.data('item-no');
+             var edit_merk=button.data('item-merk');
+             var edit_jenis=button.data('item-jenis');
+             var edit_harga=button.data('item-harga');
+             var edit_des=button.data('item-des');
+             var edit_img=button.data('item-img');
+
+             var modal=$(this)
+
+             //modal.find('.modal-body #in_id').val(edit_id);
+             modal.find('.modal-body #in_no').val(edit_no);
+             modal.find('.modal-body #in_merk').val(edit_merk);
+             modal.find('.modal-body #in_jenis').val(edit_jenis);
+             modal.find('.modal-body #in_harga').val(edit_harga);
+             modal.find('.modal-body #in_des').val(edit_des);
+             modal.find('.modal-body #in_img').val(edit_img);
+
+
+             })
+
+             //on modal hide
+             $('#editModal').on('hide.bs.modal',function() {
+               //alert("mdoal hide");
+               $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked');
+               $("#editForm").trigger("reset");
+           })
+
+         })
+
+     </script>
 
 </body>
 </html>

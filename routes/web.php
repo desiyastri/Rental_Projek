@@ -40,6 +40,7 @@ Route::post('/admin/detail/update','DetailtiketController@detail_Update');
 Route::get('admin/mobil', 'MobilController@mobil');
 Route::post('/mobilAction','MobilController@proses_upload');
 Route::get('admin/mobil/hapus/{id}', 'MobilController@hapus');
+Route::put('/mobilUpdate', 'MobilController@mobil_update');
 
 //Route Pelanggan
 Route::get('admin/pelanggan', 'PelangganController@pelanggan');

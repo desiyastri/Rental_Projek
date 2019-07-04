@@ -63,4 +63,36 @@ class MobilController extends Controller
 
       return redirect('admin/mobil');
     }
+
+    public function mobil_update(Request $request)
+    {
+      $this->validate($request,[
+        'no_polisi' => 'required',
+        'merk_mobil' => 'required',
+        'jenis_mobil' => 'required',
+        'harga' => 'required',
+        'deskripsi' => 'required',
+        'img' => 'required|file|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+      if($request->file('img') == "")
+      {
+        $produk->img=$produk->img;
+      } else{
+        $file = $request->file('img');
+        $filename = time."_".$file->getClientOriginalName();
+        $file->move('img_rental', $filename);
+      }
+
+      Mobil::where('id', $request->id)->update([
+        'no_polisi' => $request->no_polisi,
+        'merk_mobil' => $request->merk_mobil,
+        'jenis_mobil' => $request->jenis_mobil,
+        'harga' => $request->harga,
+        'deskripsi' => $request->deskripsi,
+        'img' => $filename,
+        ]);
+
+      return redirect('admin/mobil');
+    }
 }
